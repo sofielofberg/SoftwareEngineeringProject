@@ -1,0 +1,147 @@
+openapi: 3.0.4
+info:
+  title: Receipts
+  description: |-
+    The API specification for receipts, more to come.
+  version: 1.0.0
+
+paths:
+  /reciepts:
+    get:
+      summary: Return all receipts.
+      description: ...
+      operationId: returnReceipts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Receipt'
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - receipt_auth:
+            - read:receipts
+    post:
+      summary: Add a new receipt.
+      description: ...
+      operationId: addReceipt
+      requestBody:
+        description: Add a new receipt
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Receipt'
+        required: true
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Receipt'
+        '400':
+          description: Invalid input
+        '422':
+          description: Validation exception
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - receipt_auth:
+            - write:receipts
+            - read:receipts
+
+  /reciepts/approved:
+    get:
+      summary: Return all approved receipts.
+      description: ...
+      operationId: returnApprovedReceipts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                      - $ref: '#/components/schemas/Receipt'
+                      - properties:
+                          isApproved:
+                            example: true
+        default:
+          description: Unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+      security:
+        - receipt_auth:
+            - read:receipts
+
+components:
+  schemas:
+    Receipt:
+      required:
+        - date
+        - amount
+        - receiptPhotoUrl
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 10
+        submitterId:
+          type: integer
+          format: int64
+          example: 101
+        date:
+          type: string
+          format: date-time
+        amount:
+          type: number
+          format: double
+          example: 99.95
+        receiptPhotoUrl:
+          type: string
+        isApproved:
+          type: boolean
+          example: false
+    Error:
+      required:
+        - code
+        - message
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
+  requestBodies:
+    Receipt:
+      description: Receipt to be created
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Receipt'
+  securitySchemes:
+    receipt_auth:
+      type: oauth2
+      flows:
+        implicit:
+          authorizationUrl: ...
+          scopes:
+            "write:receipts": add new receipts
+            "read:receipts": read receipts
