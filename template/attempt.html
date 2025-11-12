@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FormAttempt</title>
+        <link rel="stylesheet" href="attempt.css">
+        <script src="/static/attempt.js"></script> 
+    </head>
+    <body>
+        <form>
+            <p>
+                You are currently logged in as: USERNAME
+            </p>
+            <button class="placeholder space">
+                log out
+            </button>
+            <fieldset>
+                <legend>Receipt Creation</legend> <!-- title in the box of it -->
+                <button class="image" onclick=" KeepRecieptPopUp()">
+                    upload image
+                </button>
+                <label>
+                    Expense type: 
+                    <select>
+                        <option value="one">
+                            Travel
+                        </option>
+                        <option value="two">
+                            Food
+                        </option>
+                        <option value="three">
+                            Byuing assets
+                        </option>
+                        <option value="four">
+                            other
+                        </option>
+                    </select>
+                </label>
+                <label class="review">
+                        Comments:
+                    <textarea class="txtArea" rows="5" cols="30"></textarea>
+                </label>
+                <button class="placeholder">
+                    submit!
+                </button>
+            </fieldset>
+        </form>
+    </body>
+</html>
