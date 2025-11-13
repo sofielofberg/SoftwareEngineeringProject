@@ -1,0 +1,86 @@
+body
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* overflow-y: auto; */
+    /* height: 100vh; */
+    /* margin-top: 300px; */
+    background-color: #f0f0f0;
+}
+
+form
+{
+    width: 500px;
+    background-color: #fff;
+    padding: 20px;
+    margin: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+fieldset
+{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 0;
+}
+
+legend
+{
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+label
+{
+    display: block;
+    margin-bottom: 5px;
+}
+
+.review,
+textarea,
+input[type="date"],
+.placeholder,
+.image
+{
+    width: calc(100% - 20px);
+    padding: 8px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    /* border: 1px solid #ccc;
+    border-radius: 4px; */
+}
+
+.space
+{
+    margin-bottom: 20px;
+}
+
+.scroll
+{
+    border: 2px inset rgba(0, 0, 0, 0.537);
+    position: relative;
+    height: 50vh;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.receiptDisplay
+{
+    display: flex;
+    justify-content: space-around;
+    margin: 5px;
+
+    border: 1px outset rgb(0, 0, 0);
+    border-radius: 5px;
+
+    background-color: #e5e5e5;
+}
+
+.receiptDisplay:hover
+{
+    background-color: #cfcfcf;
+    border: 1px inset rgb(0, 0, 0);
+}

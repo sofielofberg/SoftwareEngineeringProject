@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            ReceiptView
+        </title>
+        <link rel="stylesheet" href="/static/receiptView.css">
+    </head>
+    <body>
+        <button>
+            Go Back
+        </button>
+        <form>
+            <p>
+                You are currently logged in as: USERNAME
+            </p>
+            <button class="placeholder space">
+                log out
+            </button>
+            <fieldset>
+                <legend>Receipt View</legend> <!-- title in the box of it -->
+                <div class="flex">
+                    <div class="image">
+                        <img src="/placeholderReceipt.png">
+                    </div>
+                    <div class="information">
+                        <p>
+                            Submitter: NAME
+                        </p>
+                        <p>
+                            Date: DATE
+                        </p>
+                        <label class="space">
+                            Status
+                            <select>
+                                <option value="one">
+                                    Handled
+                                </option>
+                                <option value="two">
+                                    Approved
+                                </option>
+                                <option value="four">
+                                    Denied
+                                </option>
+                            </select>
+                        </label>
+                        <button class="placeholder">
+                            submit!
+                        </button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </body>
+</html>

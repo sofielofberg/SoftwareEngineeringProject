@@ -1,0 +1,41 @@
+body
+{
+    margin: 0;
+}
+
+.header
+{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 10px;
+    border: 2px outset rgb(0, 0, 0);
+    width: 100vw;
+    height: 150px;
+}
+
+.header button
+{
+    width: 80px;
+    height: 40px;
+}
+
+.logo
+{
+    /* border: 1px solid red; */
+    width: 500px;
+}
+
+.logo img
+{
+    position: relative;
+    width: 100%;
+}
+
+.main
+{
+    height: calc(100vh - 155px);
+    padding: 30px;
+}
