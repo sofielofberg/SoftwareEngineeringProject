@@ -39,9 +39,14 @@ label
     margin-bottom: 5px;
 }
 
+a 
+{
+    text-decoration: none;
+    color: black;
+}
+
 .review,
 textarea,
-input[type="date"],
 .placeholder,
 .image
 {

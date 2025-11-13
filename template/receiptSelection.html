@@ -11,11 +11,18 @@
             <p>
                 You are currently logged in as: USERNAME
             </p>
-            <button class="placeholder space">
-                log out
-            </button>
+            <a href="/template/welcome.html">
+                <button type="button" class="placeholder space">
+                    log out
+                </button>
+            </a>
             <fieldset>
                 <legend>Receipt Selection</legend> <!-- title in the box of it -->
+                <!-- TODO
+                    add functionality:
+                    apply filter to search
+                    display receipts from database
+                -->
                 <label class="space">
                     Filter:
                     <select>
@@ -37,9 +44,17 @@
                     search
                 </button>
                 <div class="scroll">
-                    <div class="receiptDisplay">
+                    <a class="receiptDisplay" href="/template/receipt.html">
+                        <p>
+                            Submit New Receipt +
+                        </p>
+                    </a>
+                    <a href="/template/receiptViewSalesman.html" class="receiptDisplay">
+                        <p class="rID">
+                            #00001
+                        </p>
                         <p class="rDate">
-                            date of receipt
+                            date (test salesman)
                         </p>
                         <p class="rSub">
                             submitter
@@ -47,7 +62,37 @@
                         <p class="rStatus">
                             status
                         </p>
-                    </div>
+                    </a>
+
+                    <a href="/template/receiptViewAccountant.html" class="receiptDisplay">
+                        <p class="rID">
+                            #00002
+                        </p>
+                        <p class="rDate">
+                            date (test accountant)
+                        </p>
+                        <p class="rSub">
+                            submitter
+                        </p>
+                        <p class="rStatus">
+                            status
+                        </p>
+                    </a>
+
+                    <a href="/template/receiptViewManager.html" class="receiptDisplay">
+                        <p class="rID">
+                            #00003
+                        </p>
+                        <p class="rDate">
+                            date (test manager)
+                        </p>
+                        <p class="rSub">
+                            submitter
+                        </p>
+                        <p class="rStatus">
+                            status
+                        </p>
+                    </a>
                 </div>
             </fieldset>
         </form>

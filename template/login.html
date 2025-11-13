@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Log in</title>
+        <link rel="stylesheet" href="/static/login.css">
+    </head>
+    <body>
+        <button>
+            <a href="/template/welcome.html"> Exit </a>
+        </button>
+        <form>
+            <fieldset>
+                <legend>Log in</legend> <!-- title in the box of it -->
+                <div>
+                    <label for="uname">
+                        <b>Username</b>
+                    </label>
+                    <input class="space" type="text" placeholder="Enter Username" name="uname" required>
+
+                    <label for="psw">
+                        <b>Password</b>
+                    </label>
+                    <input class="space" type="password" placeholder="Enter Password" name="psw" required>
+                        
+                    <button class="placeholder" type="submit">
+                        Login
+                    </button>
+
+                    <label>
+                        <input type="checkbox" checked="checked" name="remember"> Remember me
+                    </label>
+                </div>
+            </fieldset>
+        </form>
+    </body>
+</html>

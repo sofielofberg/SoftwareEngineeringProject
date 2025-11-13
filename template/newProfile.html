@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>New User</title>
+        <link rel="stylesheet" href="/static/login.css">
+        <script src="/static/attempt.js"></script>
+    </head>
+    <body>
+        <button>
+            <a href="/template/welcome.html"> Exit </a>
+        </button>
+        <form>
+            <fieldset>
+                <legend>Create New User</legend> <!-- title in the box of it -->
+                <div>
+                    <label for="uname">
+                        <b>Username</b>
+                    </label>
+                    <input class="space" type="text" placeholder="Enter Username" name="uname" required>
+
+                    <label for="psw">
+                        <b>Password</b>
+                    </label>
+                    <input class="space" type="password" placeholder="Enter Password" name="psw" required>
+
+                    <label for="role">
+                        Role
+                    </label>
+                        <select class="space" name="role">
+                            <option value="salesman">
+                                Salesman
+                            </option>
+                            <option value="accountant">
+                                Accountant
+                            </option>
+                            <option value="manager">
+                                Manager
+                            </option>
+                        </select>
+            
+                    <button class="placeholder" type="submit">
+                        Create New Account
+                    </button>
+                </div>
+            </fieldset>
+        </form>
+    </body>
+</html>

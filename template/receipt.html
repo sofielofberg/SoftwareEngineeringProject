@@ -2,31 +2,44 @@
 <html>
     <head>
         <title>Receipt</title>
-        <link rel="stylesheet" href="/static/attempt.css">
+        <link rel="stylesheet" href="/static/receipt.css">
         <script src="/static/attempt.js"></script>
     </head>
     <body>
+        <a href="/template/receiptSelection.html">
+            <button>
+                Go Back
+            </button>
+        </a>
         <form>
             <p>
                 You are currently logged in as: USERNAME
             </p>
-            <button class="placeholder space">
-                log out
-            </button>
+            <a href="/template/welcome.html">
+                <button type="button" class="placeholder space">
+                    log out
+                </button>
+            </a>
             <fieldset>
                 <legend>Receipt Creation</legend> <!-- title in the box of it -->
                 <button class="image space" onclick="KeepRecieptPopUp()">
                     upload image
                 </button>
                 <label class="space ">
-                    Amount spent:
-                    <input type="text">
+                    Amount spent:  
+                    <input type="number" step="0.01" required>
                 </label>
                 <label class="space">
-                    Date:
-                    <input type="text">
+                    Date:  
+                    <input type="datetime-local" required>
                 </label>
-                <button class="placeholder">
+                <!-- TODO
+                    add functionality:
+                    save info
+                    reload page
+                    tell user receipt has been submitted
+                -->
+                <button type="submit" class="placeholder">
                     submit!
                 </button>
             </fieldset>

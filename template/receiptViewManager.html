@@ -5,20 +5,25 @@
             ReceiptView
         </title>
         <link rel="stylesheet" href="/static/receiptView.css">
+         <script src="/static/attempt.js"></script> 
     </head>
     <body>
-        <button>
-            Go Back
-        </button>
+        <a href="/template/receiptSelection.html">
+            <button>
+                Go Back
+            </button>
+        </a>
         <form>
             <p>
                 You are currently logged in as: USERNAME
             </p>
-            <button class="placeholder space">
-                log out
-            </button>
+            <a href="/template/welcome.html">
+                <button type="button" class="placeholder space">
+                    log out
+                </button>
+            </a>
             <fieldset>
-                <legend>Receipt View</legend> <!-- title in the box of it -->
+                <legend>Receipt #[ID]</legend> <!-- title in the box of it -->
                 <div class="flex">
                     <div class="image">
                         <img src="/placeholderReceipt.png">
@@ -30,23 +35,20 @@
                         <p>
                             Date: DATE
                         </p>
-                        <label class="space">
-                            Status
-                            <select>
-                                <option value="one">
-                                    Handled
-                                </option>
-                                <option value="two">
-                                    Approved
-                                </option>
-                                <option value="four">
-                                    Denied
-                                </option>
-                            </select>
-                        </label>
-                        <button class="placeholder">
-                            submit!
+                        <p>
+                            Amount: VALUE
+                        </p>
+                        <p>
+                            Status: STATUS
+                        </p>
+
+                        <button type="submit" class="placeholder" value="handled">
+                            Approve
                         </button>
+                        <button type="submit" class="deny placeholder" value="denied" onclick="boom()">
+                            Deny
+                        </button>
+                        <img class="boom" id="boom" src="/boom.gif">
                     </div>
                 </div>
             </fieldset>

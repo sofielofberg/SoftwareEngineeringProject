@@ -1,4 +1,4 @@
-body
+body 
 {
     display: flex;
     flex-direction: column;
@@ -10,7 +10,7 @@ body
     background-color: #f0f0f0;
 }
 
-form
+form 
 {
     width: 500px;
     background-color: #fff;
@@ -20,20 +20,20 @@ form
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-fieldset
+fieldset 
 {
     border: 1px solid black;
     padding: 10px;
     margin: 0;
 }
 
-legend
+legend 
 {
     font-weight: bold;
     margin-bottom: 10px;
 }
 
-label
+label 
 {
     display: block;
     margin-bottom: 5px;
@@ -61,46 +61,3 @@ textarea,
 {
     margin-bottom: 20px;
 }
-
-.flex
-{
-    display: flex;
-    justify-content: space-around;
-}
-
-.image
-{
-    border: 1px inset rgb(0, 0, 0);
-    height: 50vh;
-    width: 50%;
-    overflow: scroll;
-}
-
-img
-{
-    position: relative;
-    width: 100%;
-}
-
-.information
-{
-    /* border: 1px solid red; */
-    border-left: 2px solid black;
-    padding-left: 20px;
-}
-
-.boom
-{
-    top: -50px;
-    left: 20px;
-    height: 40px;
-    width: 60%;
-    display: none;
-}
-
-
-.deny:active + .boom
-{
-    display: inline-block;
-}
-

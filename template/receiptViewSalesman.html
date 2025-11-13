@@ -7,18 +7,22 @@
         <link rel="stylesheet" href="/static/receiptView.css">
     </head>
     <body>
-        <button>
-            Go Back
-        </button>
+            <a href="/template/receiptSelection.html">
+                <button>
+                    Go Back
+                </button>
+            </a>
         <form>
             <p>
                 You are currently logged in as: USERNAME
             </p>
-            <button class="placeholder space">
-                log out
-            </button>
+            <a href="/template/welcome.html">
+                <button type="button" class="placeholder space">
+                    log out
+                </button>
+            </a>
             <fieldset>
-                <legend>Receipt View</legend> <!-- title in the box of it -->
+                <legend>Receipt #[ID]</legend> <!-- title in the box of it -->
                 <div class="flex">
                     <div class="image">
                         <img src="/placeholderReceipt.png">
@@ -29,6 +33,9 @@
                         </p>
                         <p>
                             Date: DATE
+                        </p>
+                        <p>
+                            Amount: VALUE
                         </p>
                         <p>
                             Status: STATUS
