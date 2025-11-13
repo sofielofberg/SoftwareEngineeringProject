@@ -1,59 +1,66 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from datetime import datetime
-from enum import Enum, auto
-from typing import Any
+from typing import Optional
 
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import DateTime, Double
+
+from main import db
 from accountant import Accountant
-from bankstmt import BankStmt
 from manager import Manager
-from salesman import Salesman
 
 
-class State(Enum):
-    UNPROCESSED = auto()
-    HANDLED = auto()
-    APPROVED = auto()
-    DENIED = auto()
+class Receipt(db.Model):
+    __tablename__ = "receipt"
 
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    submitter_id: Mapped[int] = mapped_column(ForeignKey("salesmen.id"))
+    image_path: Mapped[str]
+    date: DateTime
+    amount: Double
+    bank_stmt_id: Mapped[int]
 
-@dataclass
-class Receipt:
-    submitter: Salesman
-    receipt: Any
-    date: datetime
-    amount: float
-    bank_stmt: BankStmt
-    state: State
-    handled_by: Accountant | None
-    approved_by: Manager | None
+    denied: Mapped[bool] = mapped_column(default=False)
+    handled_by: Mapped[Optional[int]] = mapped_column(ForeignKey("accountant.id"), default=None)
+    approved_by: Mapped[Optional[int]] = mapped_column(ForeignKey("manager.id"), default=None)
 
     @staticmethod
-    def get_unproccessed() -> Receipt:
+    def get_unprocessed() -> list[Receipt]:
         pass
 
     @staticmethod
-    def get_handled() -> Receipt:
+    def get_handled() -> list[Receipt]:
         pass
+
+    @staticmethod
+    def get_all() -> list[Receipt]:
+        pass
+
+    def is_unprocessed(self) -> bool:
+        return self.handled_by == None and self.approved_by == None and self.denied == False
+
+    def is_approved(self) -> bool:
+        return self.approved_by != None
+
+    def is_handled(self) -> bool:
+        return self.handled_by != None
 
     def handle(self, accountant: Accountant):
-        if self.state != State.UNPROCESSED:
+        if self.is_unprocessed():
             # TODO is this the right thing?
             raise Exception(f"Cannot handle receipt in state: {self.state}")
-        
-        self.state = State.HANDLED
+
         self.handled_by = accountant
-    
+
     def deny(self, accountant: Accountant):
-        if self.state not in [State.UNPROCESSED, State.HANDLED]:
+        if not self.is_approved():
             raise Exception(f"Cannot deny receipt in state: {self.state}")
-        
-        self.state = State.DENIED
+
+        self.deny = False
 
     def approve(self, manager: Manager):
-        if self.state != State.HANDLED:
+        if not self.is_handled():
             raise Exception(f"Cannot approve receipt in state: {self.state}")
-        
-        self.state = State.DENIED
+
         self.approved_by = manager
