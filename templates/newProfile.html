@@ -7,7 +7,7 @@
     </head>
     <body>
         <button>
-            <a href="/template/welcome.html"> Exit </a>
+            <a href="{{ url_for("welcome") }}"> Exit </a>
         </button>
         <form>
             <fieldset>
@@ -37,7 +37,7 @@
                                 Manager
                             </option>
                         </select>
-            
+
                     <button class="placeholder" type="submit">
                         Create New Account
                     </button>

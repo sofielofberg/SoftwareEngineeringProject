@@ -4,12 +4,33 @@ from main import app
 from receipt import Receipt
 
 @app.route("/")
-def hello():
-    return "Hello"
+def welcome():
+    return render_template("welcome.html")
 
-@app.route("/salesman", methods=("GET","POST"))
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/new_profile")
+def new_profile():
+    return render_template("newProfile.html")
+
+@app.route("/select")
+def select():
+    return render_template("receiptSelection.html")
+
+@app.route("/submit")
+def submit():
+    return render_template("receiptSubmission.html")
+
+@app.route("/accountant")
+def accountant():
+    return render_template("receiptViewAccountant.html")
+
+@app.route("/manager")
+def manager():
+    return render_template("receiptViewManager.html")
+
+@app.route("/salesman")
 def salesman():
-    if request.method == "POST":
-        pass
-
-    return render_template("receipt.html")
+    return render_template("receiptViewSalesman.html")

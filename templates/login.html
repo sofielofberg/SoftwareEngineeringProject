@@ -6,7 +6,7 @@
     </head>
     <body>
         <button>
-            <a href="/template/welcome.html"> Exit </a>
+            <a href="{{ url_for("welcome") }}"> Exit </a>
         </button>
         <form>
             <fieldset>
@@ -21,7 +21,7 @@
                         <b>Password</b>
                     </label>
                     <input class="space" type="password" placeholder="Enter Password" name="psw" required>
-                        
+
                     <button class="placeholder" type="submit">
                         Login
                     </button>

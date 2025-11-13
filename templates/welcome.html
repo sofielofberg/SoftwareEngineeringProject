@@ -8,13 +8,13 @@
     </head>
     <body>
         <div class="header">
-            <a href="/template/login.html">
+            <a href="{{ url_for("login") }}">
                 <button>
                     login
                 </button>
             </a>
             <div class="logo">
-                <img src="/GM.png">
+                <img src="/static/GM.png">
             </div>
             <p>
                 Support: <br> (212) 664-7665
@@ -31,7 +31,7 @@
                 If you are a new hire, <span style="font-weight: bold;">click on the button
                 below to create a new profile within the system</span>.
             </p>
-            <a href="/template/newProfile.html">
+            <a href="{{ url_for("new_profile") }}">
                 <button>
                     create new profile
                 </button>
@@ -46,7 +46,7 @@
                 <br>
                 <br>
                 If you, for development purposes, are already logged in,
-                click <a href="/template/receiptSelection.html"> here </a>
+                click <a href="{{ url_for("select") }}"> here </a>
             </p>
         </div>
     </body>
