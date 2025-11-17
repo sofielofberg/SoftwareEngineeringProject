@@ -49,6 +49,7 @@
                             Submit New Receipt +
                         </p>
                     </a>
+
                     <a href="{{ url_for("salesman") }}" class="receiptDisplay">
                         <p class="rID">
                             #00001
@@ -93,6 +94,26 @@
                             status
                         </p>
                     </a>
+
+                    {% for receipt in receipts %}
+
+                    <a class="receiptDisplay">
+                        <p class="rID">
+                            {{ receipt.id }}
+                        </p>
+                        <p class="rDate">
+                            {{ receipt.date }}
+                        </p>
+                        <p class="rSub">
+                            {{ receipt.submitter_id }}
+                        </p>
+                        <p class="rStatus">
+                            {{ receipt.state }}
+                        </p>
+                    </a>
+
+                    {% endfor %}
+
                 </div>
             </fieldset>
         </form>

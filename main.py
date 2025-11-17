@@ -17,8 +17,13 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
 
 db = SQLAlchemy(app, model_class=Base)
 
+
+from receipt import Receipt
+
 with app.app_context():
+    db.drop_all()
     db.create_all()
+    db.session.commit()
 
 # Import the views
 import views

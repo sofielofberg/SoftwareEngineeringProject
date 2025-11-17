@@ -5,6 +5,8 @@ from typing import Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.types import DateTime, Double
+from sqlalchemy.sql import func
+
 
 from main import db
 from accountant import Accountant
@@ -17,9 +19,10 @@ class Receipt(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     submitter_id: Mapped[int] = mapped_column(ForeignKey("salesmen.id"))
     image_path: Mapped[str]
-    date: DateTime
+    date: Mapped[DateTime]
     amount: Double
     bank_stmt_id: Mapped[int]
+    state: Mapped[str]
 
     denied: Mapped[bool] = mapped_column(default=False)
     handled_by: Mapped[Optional[int]] = mapped_column(ForeignKey("accountant.id"), default=None)

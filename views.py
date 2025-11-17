@@ -17,7 +17,8 @@ def new_profile():
 
 @app.route("/select")
 def select():
-    return render_template("receiptSelection.html")
+    receipts = Receipt.query.all()
+    return render_template("receiptSelection.html", receipts=receipts)
 
 @app.route("/submit")
 def submit():
