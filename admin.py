@@ -1,11 +1,11 @@
-from dataclasses import dataclass
-
 from user import User
 from receipt import Receipt
 
-@dataclass
-class Admin (User):
-    pass
+class Admin(User):
+    __mapper_args__ = {
+        "polymorphic_identity": "admin",
+    }
 
     def rollback(self, receipt: Receipt):
         pass
+
