@@ -108,7 +108,15 @@
                             {{ receipt.submitter_id }}
                         </p>
                         <p class="rStatus">
-                            {{ receipt.state }}
+                            {{% if receipt.is_unprocessed() %}}
+                                Unprocessed
+                            {{% elif receipt.is_approved() %}}
+                                Approved
+                            {{% elif receipt.is_handled() %}}
+                                Handled
+                            {{% else %}}
+                                Secret fourth thing
+                            {{% endif %}}
                         </p>
                     </a>
 
