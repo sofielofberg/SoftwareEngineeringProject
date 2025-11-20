@@ -96,8 +96,7 @@
                     </a>
 
                     {% for receipt in receipts %}
-
-                    <a class="receiptDisplay">
+                    <a href="{{ url_for("receipt") }}/{{ receipt.id }}" class="receiptDisplay">
                         <p class="rID">
                             {{ receipt.id }}
                         </p>
@@ -114,12 +113,13 @@
                                 Approved
                             {% elif receipt.is_handled() %}
                                 Handled
+                            {% elif receipt.denied %}
+                                Handled
                             {% else %}
-                                Secret fourth thing
+                                Secret fifth thing
                             {% endif %}
                         </p>
                     </a>
-
                     {% endfor %}
 
                 </div>

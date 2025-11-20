@@ -41,6 +41,10 @@ class Receipt(db.Model):
     )
 
     @staticmethod
+    def get_by_id(receipt_id: int) -> Receipt | None:
+        return db.session.get(Receipt, receipt_id)
+
+    @staticmethod
     def get_unprocessed() -> list[Receipt]:
         return db.session.scalars(select(Receipt)).filter_by(
             handled_by=None, approved_by=None, denied=False

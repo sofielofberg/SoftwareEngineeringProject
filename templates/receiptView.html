@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>ReceiptView</title>
+        <link rel="stylesheet" href="/static/receiptView.css">
+    </head>
+    <body>
+        <a href="{{ url_for("select") }}">
+            <button>
+                Go Back
+            </button>
+        </a>
+        <form>
+            <p>
+                You are currently logged in as: {{ user.username }}
+            </p>
+            <a href="{{ url_for("logout") }}">
+                <button type="button" class="placeholder space">
+                    log out
+                </button>
+            </a>
+            <fieldset>
+                <legend>Receipt #{{ receipt.id }}</legend> <!-- title in the box of it -->
+                <div class="flex">
+                    <div class="image">
+                        <img src="{{ receipt.image_path }}">
+                    </div>
+                    <div class="information">
+                        <p>
+                            Submitter: {{ receipt.submitter.username }}
+                        </p>
+                        <p>
+                            Date: {{ receipt.date }}
+                        </p>
+                        <p>
+                            Amount: {{ receipt.amount }}
+                        </p>
+                        <p>
+                            {% if receipt.is_unprocessed() %}
+                            Status: Unprocessed
+                            {% elif receipt.is_handled() %}
+                            Status: Handled
+                            {% elif receipt.is_approved() %}
+                            Status: Approved
+                            {% elif receipt.denied %}
+                            Status: Denied
+                            {% else %}
+                            Status: Unknown
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </body>
+</html>

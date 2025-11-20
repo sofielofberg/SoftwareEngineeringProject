@@ -3,7 +3,6 @@
     <head>
         <title>ReceiptView</title>
         <link rel="stylesheet" href="/static/receiptView.css">
-         <script src="/static/attempt.js"></script>
     </head>
     <body>
         <a href="{{ url_for("select") }}">
@@ -13,7 +12,7 @@
         </a>
         <form>
             <p>
-                You are currently logged in as: USERNAME
+                You are currently logged in as: {{ user.username }}
             </p>
             <a href="{{ url_for("logout") }}">
                 <button type="button" class="placeholder space">
@@ -21,27 +20,36 @@
                 </button>
             </a>
             <fieldset>
-                <legend>Receipt #[ID]</legend> <!-- title in the box of it -->
+                <legend>Receipt #{{ receipt.id }}</legend> <!-- title in the box of it -->
                 <div class="flex">
                     <div class="image">
-                        <img src="/static/placeholderReceipt.png">
+                        <img src="{{ receipt.image_path }}">
                     </div>
                     <div class="information">
                         <p>
-                            Submitter: NAME
+                            Submitter: {{ receipt.submitter.username }}
                         </p>
                         <p>
-                            Date: DATE
+                            Date: {{ receipt.date }}
                         </p>
                         <p>
-                            Amount: VALUE
+                            Amount: {{ receipt.amount }}
                         </p>
                         <p>
-                            Status: STATUS
+                            {% if receipt.is_unprocessed() %}
+                            Status: Unprocessed
+                            {% elif receipt.is_handled() %}
+                            Status: Handled
+                            {% elif receipt.is_approved() %}
+                            Status: Approved
+                            {% elif receipt.denied %}
+                            Status: Denied
+                            {% else %}
+                            Status: Unknown
+                            {% endif %}
                         </p>
-
                         <button type="submit" class="placeholder" value="handled">
-                            Approve
+                            Handle
                         </button>
                         <button type="submit" class="deny placeholder" value="denied" onclick="boom()">
                             Deny
