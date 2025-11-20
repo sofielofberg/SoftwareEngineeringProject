@@ -96,15 +96,15 @@
                     </a>
 
                     {% for receipt in receipts %}
-                    <a href="{{ url_for("receipt") }}/{{ receipt.id }}" class="receiptDisplay">
+                    <a href="{{ url_for("receipt", receipt_id=receipt.id) }}" class="receiptDisplay">
                         <p class="rID">
-                            {{ receipt.id }}
+                            #{{ receipt.id }}
                         </p>
                         <p class="rDate">
                             {{ receipt.date }}
                         </p>
                         <p class="rSub">
-                            {{ receipt.submitter_id }}
+                            {{ receipt.submitter.username }}
                         </p>
                         <p class="rStatus">
                             {% if receipt.is_unprocessed() %}
@@ -114,7 +114,7 @@
                             {% elif receipt.is_handled() %}
                                 Handled
                             {% elif receipt.denied %}
-                                Handled
+                                Denied
                             {% else %}
                                 Secret fifth thing
                             {% endif %}

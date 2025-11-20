@@ -15,12 +15,14 @@ class Receipt(db.Model):
     __tablename__ = "receipt"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
-    submitter_id: Mapped[int] = mapped_column(ForeignKey("user.id"))
+    submitter_id: Mapped[int] = mapped_column(ForeignKey("user.id"), init=False)
+    submitter: Mapped[salesman.Salesman] = relationship(
+        foreign_keys=[submitter_id]
+    )
     image_path: Mapped[str]
-    date: Mapped[datetime]
     amount: Mapped[float]
+    date: Mapped[datetime]
     bank_stmt_id: Mapped[int]
-    state: Mapped[str]
 
     denied: Mapped[bool] = mapped_column(default=False)
     handled_by_id: Mapped[int | None] = mapped_column(
@@ -30,9 +32,6 @@ class Receipt(db.Model):
         ForeignKey("user.id"), default=None
     )
 
-    submitter: Mapped[salesman.Salesman] = relationship(
-        init=False, foreign_keys=[submitter_id]
-    )
     handled_by: Mapped[Accountant | None] = relationship(
         default=None, foreign_keys=[handled_by_id]
     )
@@ -68,6 +67,10 @@ class Receipt(db.Model):
 
     def is_handled(self) -> bool:
         return self.handled_by is not None and not self.denied
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
 
     def handle(self, accountant: Accountant):
         assert isinstance(accountant, Accountant)

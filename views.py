@@ -20,7 +20,7 @@ def login():
         username = request.form.get("username")
         password = request.form.get("password")
         user = User.get_by_username(username)
-        if user.password == password:
+        if user and user.password == password:
             login_user(user)
             return redirect(url_for("select"))
 
@@ -57,12 +57,26 @@ def select():
     return render_template("receiptSelection.html",
                            user=current_user, receipts=receipts)
 
-@app.route("/submit")
+@app.route("/submit", methods=["GET", "POST"])
 @login_required
 def submit():
-    return render_template("receiptSubmission.html")
+    if request.method == "POST" and isinstance(current_user, Salesman):
+        amount = float(request.form.get("amount"))
+        date = datetime.fromisoformat(request.form.get("date"))
+        bank_stmt_id = int(request.form.get("bank_stmt_id"))
+        receipt = Receipt(
+            submitter=current_user,
+            image_path="/static/placeholderReceipt.png",
+            amount=amount,
+            date=date,
+            bank_stmt_id=bank_stmt_id,
+        )
+        receipt.save()
+        return redirect(url_for("select"))
 
-@app.route("/receipt/{id:int}")
+    return render_template("receiptSubmission.html", user=current_user)
+
+@app.route("/receipt/<int:receipt_id>")
 @login_required
 def receipt(receipt_id):
     # Could have methods: may_approve(receipt), may_handle(receipt), may_view(receipt)
@@ -85,35 +99,32 @@ def receipt(receipt_id):
 @app.route("/accountant")
 @login_required
 def accountant():
-    receipt = Receipt(0,
-                      "static/placeholderReceipt.png",
+    receipt = Receipt(None,
+                      "/static/placeholderReceipt.png",
                       datetime.now(),
                       100.00,
-                      124,
-                      "eh")
+                      124)
     return render_template("receiptViewHandle.html",
                            user=current_user, receipt=receipt)
 
 @app.route("/manager")
 @login_required
 def manager():
-    receipt = Receipt(0,
-                      "static/placeholderReceipt.png",
+    receipt = Receipt(None,
+                      "/static/placeholderReceipt.png",
                       datetime.now(),
                       100.00,
-                      124,
-                      "eh")
+                      124)
     return render_template("receiptViewApprove.html",
                            user=current_user, receipt=receipt)
 
 @app.route("/salesman")
 @login_required
 def salesman():
-    receipt = Receipt(0,
-                      "static/placeholderReceipt.png",
+    receipt = Receipt(None,
+                      "/static/placeholderReceipt.png",
                       datetime.now(),
                       100.00,
-                      124,
-                      "eh")
+                      124)
     return render_template("receiptView.html",
                            user=current_user, receipt=receipt)
