@@ -2,10 +2,9 @@
 # https://flask.palletsprojects.com/en/stable/patterns/packages/
 
 from flask import Flask
-from flask_login import LoginManager
 
 import database
-import user
+import login
 
 # Start flask
 app = Flask(__name__)
@@ -16,15 +15,7 @@ database.init_db(app)
 database.setup_db(app)
 
 # Login
-login_manager = LoginManager(app)
-login_manager.session_protection = "strong"
-login_manager.login_view = "login"
-
-
-@login_manager.user_loader
-def load_user(user_id):
-    return user.User.get_by_id(user_id)
-
+login.init_login_manager(app)
 
 # Import the views
 import views  # noqa: F401
