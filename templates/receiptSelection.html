@@ -1,17 +1,15 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>
-            ReceiptSelector
-        </title>
+        <title>ReceiptSelector</title>
         <link rel="stylesheet" href="/static/receiptSelection.css">
     </head>
     <body>
         <form>
             <p>
-                You are currently logged in as: USERNAME
+                You are currently logged in as: {{ user.username }}
             </p>
-            <a href="{{ url_for("welcome") }}">
+            <a href="{{ url_for("logout") }}">
                 <button type="button" class="placeholder space">
                     log out
                 </button>
@@ -44,11 +42,13 @@
                     search
                 </button>
                 <div class="scroll">
+                    {% if user.type == "salesman" %}
                     <a class="receiptDisplay" href="{{ url_for("submit") }}">
                         <p>
                             Submit New Receipt +
                         </p>
                     </a>
+                    {% endif %}
 
                     <a href="{{ url_for("salesman") }}" class="receiptDisplay">
                         <p class="rID">

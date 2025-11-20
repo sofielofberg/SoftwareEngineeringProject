@@ -9,34 +9,34 @@
         <button>
             <a href="{{ url_for("welcome") }}"> Exit </a>
         </button>
-        <form>
+        <form method="POST">
             <fieldset>
                 <legend>Create New User</legend> <!-- title in the box of it -->
                 <div>
-                    <label for="uname">
+                    <label for="username">
                         <b>Username</b>
                     </label>
-                    <input class="space" type="text" placeholder="Enter Username" name="uname" required>
+                    <input class="space" type="text" placeholder="Enter Username" name="username" required>
 
-                    <label for="psw">
+                    <label for="password">
                         <b>Password</b>
                     </label>
-                    <input class="space" type="password" placeholder="Enter Password" name="psw" required>
+                    <input class="space" type="password" placeholder="Enter Password" name="password" required>
 
                     <label for="role">
                         Role
                     </label>
-                        <select class="space" name="role">
-                            <option value="salesman">
-                                Salesman
-                            </option>
-                            <option value="accountant">
-                                Accountant
-                            </option>
-                            <option value="manager">
-                                Manager
-                            </option>
-                        </select>
+                    <select class="space" name="role">
+                        <option value="salesman">
+                            Salesman
+                        </option>
+                        <option value="accountant">
+                            Accountant
+                        </option>
+                        <option value="manager">
+                            Manager
+                        </option>
+                    </select>
 
                     <button class="placeholder" type="submit">
                         Create New Account

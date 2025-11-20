@@ -1,8 +1,11 @@
 from flask import render_template, request, redirect, url_for
-from flask_login import login_required, login_user
+from flask_login import login_required, login_user, current_user, logout_user
 
 from main import app
 from receipt import Receipt
+from accountant import Accountant
+from manager import Manager
+from salesman import Salesman
 from user import User
 
 @app.route("/")
@@ -12,27 +15,45 @@ def welcome():
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form.get("uname")
-        password = request.form.get("psw")
+        username = request.form.get("username")
+        password = request.form.get("password")
         user = User.get_by_username(username)
-        print(username, password, user)
         if user.password == password:
             login_user(user)
             return redirect(url_for("select"))
-        else:
-            return redirect(url_for("login"))
 
     return render_template("login.html")
 
-@app.route("/new_profile")
+@app.route("/logout")
+def logout():
+    logout_user()
+    return redirect(url_for("welcome"))
+
+@app.route("/new_profile", methods=["GET", "POST"])
 def new_profile():
+    if request.method == "POST":
+        username = request.form.get("username")
+        password = request.form.get("password")
+        role = request.form.get("role")
+        if role == "salesman":
+            user = Salesman(username, password)
+        elif role == "accountant":
+            user = Accountant(username, password)
+        elif role == "manager":
+            user = Manager(username, password)
+
+        user.save()
+
+        return redirect(url_for("login"))
+
     return render_template("newProfile.html")
 
 @app.route("/select")
 @login_required
 def select():
     receipts = Receipt.get_all()
-    return render_template("receiptSelection.html", receipts=receipts)
+    return render_template("receiptSelection.html",
+                           user=current_user, receipts=receipts)
 
 @app.route("/submit")
 @login_required

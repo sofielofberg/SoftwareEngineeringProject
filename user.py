@@ -30,5 +30,6 @@ class User(db.Model, UserMixin):
     def login(self):
         pass
 
-    def save_user(self):
-        pass
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
