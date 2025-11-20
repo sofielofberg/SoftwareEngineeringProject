@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 import salesman
 from accountant import Accountant
-from main import db
+from database import db
 from manager import Manager
 
 

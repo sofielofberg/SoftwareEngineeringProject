@@ -4,7 +4,8 @@ from flask_login import UserMixin
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
-from main import db
+from database import db
+
 
 class User(db.Model, UserMixin):
     __tablename__ = "user"
