@@ -1,8 +1,12 @@
+from __future__ import annotations
+
+from flask_login import UserMixin
+from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
 from main import db
 
-class User(db.Model):
+class User(db.Model, UserMixin):
     __tablename__ = "user"
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
@@ -14,6 +18,14 @@ class User(db.Model):
         "polymorphic_on": "type",
         "polymorphic_identity": "user",
     }
+
+    @staticmethod
+    def get_by_id(user_id) -> User:
+        return db.session.get(User, user_id)
+
+    @staticmethod
+    def get_by_username(username) -> User | None:
+        return db.session.scalar(select(User).filter_by(username=username))
 
     def login(self):
         pass

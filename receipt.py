@@ -26,9 +26,9 @@ class Receipt(db.Model):
     handled_by_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"), default=None)
     approved_by_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"), default=None)
 
-    submitter: Mapped[salesman.Salesman] = relationship(init=False)
-    handled_by: Mapped[Accountant | None] = relationship(default=None)
-    approved_by: Mapped[Manager | None] = relationship(default=None)
+    submitter: Mapped[salesman.Salesman] = relationship(init=False, foreign_keys=[submitter_id])
+    handled_by: Mapped[Accountant | None] = relationship(default=None, foreign_keys=[handled_by_id])
+    approved_by: Mapped[Manager | None] = relationship(default=None, foreign_keys=[approved_by_id])
 
     @staticmethod
     def get_unprocessed() -> list[Receipt]:
