@@ -6,8 +6,8 @@ from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 import salesman
-from main import db
 from accountant import Accountant
+from main import db
 from manager import Manager
 
 
@@ -23,12 +23,22 @@ class Receipt(db.Model):
     state: Mapped[str]
 
     denied: Mapped[bool] = mapped_column(default=False)
-    handled_by_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"), default=None)
-    approved_by_id: Mapped[int | None] = mapped_column(ForeignKey("user.id"), default=None)
+    handled_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("user.id"), default=None
+    )
+    approved_by_id: Mapped[int | None] = mapped_column(
+        ForeignKey("user.id"), default=None
+    )
 
-    submitter: Mapped[salesman.Salesman] = relationship(init=False, foreign_keys=[submitter_id])
-    handled_by: Mapped[Accountant | None] = relationship(default=None, foreign_keys=[handled_by_id])
-    approved_by: Mapped[Manager | None] = relationship(default=None, foreign_keys=[approved_by_id])
+    submitter: Mapped[salesman.Salesman] = relationship(
+        init=False, foreign_keys=[submitter_id]
+    )
+    handled_by: Mapped[Accountant | None] = relationship(
+        default=None, foreign_keys=[handled_by_id]
+    )
+    approved_by: Mapped[Manager | None] = relationship(
+        default=None, foreign_keys=[approved_by_id]
+    )
 
     @staticmethod
     def get_unprocessed() -> list[Receipt]:
@@ -39,7 +49,7 @@ class Receipt(db.Model):
     @staticmethod
     def get_handled() -> list[Receipt]:
         return db.session.scalars(select(Receipt)).where(
-            Receipt.handled_by != None and not Receipt.denied
+            Receipt.handled_by is not None and not Receipt.denied
         )
 
     @staticmethod
@@ -47,13 +57,13 @@ class Receipt(db.Model):
         return db.session.scalars(select(Receipt)).all()
 
     def is_unprocessed(self) -> bool:
-        return self.handled_by == None and self.approved_by == None and not self.denied
+        return self.handled_by is None and self.approved_by is None and not self.denied
 
     def is_approved(self) -> bool:
-        return self.approved_by != None and not self.denied
+        return self.approved_by is not None and not self.denied
 
     def is_handled(self) -> bool:
-        return self.handled_by != None and not self.denied
+        return self.handled_by is not None and not self.denied
 
     def handle(self, accountant: Accountant):
         assert isinstance(accountant, Accountant)
