@@ -67,6 +67,9 @@ class Receipt(db.Model):
         return (not self.denied and self.handled_by is not None
                 and self.approved_by is None)
 
+    def is_approved(self) -> bool:
+        return self.approved_by is not None
+
     def can_be_denied(self) -> bool:
         return not self.denied and self.approved_by is None
 

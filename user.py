@@ -1,11 +1,15 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 from flask_login import UserMixin
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
-import receipt
 from database import db
+
+if TYPE_CHECKING:
+    from receipt import Receipt
 
 
 class UnauthorizedError(Exception):
@@ -36,25 +40,25 @@ class User(db.Model, UserMixin):
     def login(self):
         pass
 
-    def can_view(self, receipt: receipt.Receipt) -> bool:
+    def can_view(self, receipt: Receipt) -> bool:
         return False
 
-    def can_handle(self, receipt: receipt.Receipt) -> bool:
+    def can_handle(self, receipt: Receipt) -> bool:
         return False
 
-    def can_approve(self, receipt: receipt.Receipt) -> bool:
+    def can_approve(self, receipt: Receipt) -> bool:
         return False
 
-    def can_deny(self, receipt: receipt.Receipt) -> bool:
+    def can_deny(self, receipt: Receipt) -> bool:
         return False
 
-    def handle(self, receipt: receipt.Receipt):
+    def handle(self, receipt: Receipt):
         raise UnauthorizedError()
 
-    def approve(self, receipt: receipt.Receipt):
+    def approve(self, receipt: Receipt):
         raise UnauthorizedError()
 
-    def deny(self, receipt: receipt.Receipt):
+    def deny(self, receipt: Receipt):
         raise UnauthorizedError()
 
     def save(self):

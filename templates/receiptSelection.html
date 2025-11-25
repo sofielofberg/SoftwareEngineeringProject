@@ -107,11 +107,11 @@
                             {{ receipt.submitter.username }}
                         </p>
                         <p class="rStatus">
-                            {% if receipt.is_unprocessed() %}
+                            {% if receipt.can_be_handled() %}
                                 Unprocessed
                             {% elif receipt.is_approved() %}
                                 Approved
-                            {% elif receipt.is_handled() %}
+                            {% elif receipt.can_be_approved() %}
                                 Handled
                             {% elif receipt.denied %}
                                 Denied
