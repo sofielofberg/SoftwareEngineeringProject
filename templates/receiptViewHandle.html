@@ -10,7 +10,7 @@
                 Go Back
             </button>
         </a>
-        <form>
+        <form method="POST">
             <p>
                 You are currently logged in as: {{ user.username }}
             </p>
@@ -48,10 +48,12 @@
                             Status: Unknown
                             {% endif %}
                         </p>
-                        <button type="submit" class="placeholder" value="handled">
+                        <button type="submit" formaction="{{ url_for('handle', receipt_id=receipt.id) }}"
+                                class="placeholder">
                             Handle
                         </button>
-                        <button type="submit" class="deny placeholder" value="denied" onclick="boom()">
+                        <button type="submit" formaction="{{ url_for('deny', receipt_id=receipt.id) }}"
+                                class="deny placeholder" value="denied" onclick="boom()">
                             Deny
                         </button>
                         <img class="boom" id="boom" src="/static/boom.gif">

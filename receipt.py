@@ -75,27 +75,31 @@ class Receipt(db.Model):
     def handle(self, accountant: Accountant):
         assert isinstance(accountant, Accountant)
 
-        if self.is_unprocessed():
+        if not self.is_unprocessed():
             # TODO is this the right thing?
-            raise Exception(f"Cannot handle receipt in state: {self.state}")
+            raise Exception(f"Cannot handle a processed receipt")
 
         self.handled_by = accountant
+        db.session.commit()
 
     def deny(self, accountant: Accountant):
         assert isinstance(accountant, Accountant)
 
         if not self.is_approved():
-            raise Exception(f"Cannot deny receipt in state: {self.state}")
+            raise Exception(f"Cannot deny an approved receipt")
 
         self.deny = False
+        db.session.commit()
 
     def approve(self, manager: Manager):
         assert isinstance(manager, Manager)
 
         if not self.is_handled():
-            raise Exception(f"Cannot approve receipt in state: {self.state}")
+            raise Exception(f"Cannot approve this receipt")
 
         if self.handled_by == Manager:
-            raise Exception("Cannot be approved by same manager that handled receipt")
+            raise Exception("Receipt cannot be approved by"
+                            + " same manager that handled receipt")
 
         self.approved_by = manager
+        db.session.commit()
