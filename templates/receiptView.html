@@ -62,7 +62,7 @@
                         {% endif %}
                         {% if user.can_deny(receipt) %}
                         <button type="submit" formaction="{{ url_for('deny', receipt_id=receipt.id) }}"
-                                class="deny placeholder" value="denied" onclick="boom()">
+                                class="deny placeholder" value="denied">
                             Deny
                         </button>
                         {% endif %}
