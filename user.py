@@ -60,3 +60,60 @@ class User(db.Model, UserMixin):
     def save(self):
         db.session.add(self)
         db.session.commit()
+
+
+class Salesman(User):
+    __mapper_args__ = {
+        "polymorphic_identity": "salesman",
+    }
+
+    def may_view(self, receipt):
+        return self == receipt.submit
+
+    def submit(self, receipt: Receipt):
+        pass
+
+    def get_submitted_receipts(self) -> list[Receipt]:
+        pass
+
+
+class Accountant(User):
+    __mapper_args__ = {
+        "polymorphic_identity": "accountant",
+    }
+
+    def can_view(self, receipt):
+        return True
+
+    def can_handle(self, receipt):
+        return receipt.can_be_handled()
+
+    def can_deny(self, receipt):
+        return receipt.can_be_denied()
+
+    def handle(self, receipt):
+        assert receipt.can_be_handled()
+        receipt.handled_by = self
+        receipt.save()
+
+    def deny(self, receipt):
+        assert receipt.can_be_denied()
+        receipt.denied = True
+        receipt.save()
+
+
+class Manager(Accountant):
+    __mapper_args__ = {
+        "polymorphic_identity": "manager",
+    }
+
+    def can_approve(self, receipt):
+        return receipt.can_be_approved() and receipt.handled_by != self
+
+    def approve(self, receipt):
+        assert receipt.can_be_approved()
+        if receipt.handled_by == self:
+            raise UnauthorizedError()
+
+        receipt.approved_by = self
+        receipt.save()

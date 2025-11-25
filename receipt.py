@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, select
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
-import salesman
-from accountant import Accountant
 from database import db
-from manager import Manager
+
+if TYPE_CHECKING:
+    from user import Accountant, Salesman, Manager
 
 
 class Receipt(db.Model):
@@ -16,7 +17,7 @@ class Receipt(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     submitter_id: Mapped[int] = mapped_column(ForeignKey("user.id"), init=False)
-    submitter: Mapped[salesman.Salesman] = relationship(
+    submitter: Mapped[Salesman] = relationship(
         foreign_keys=[submitter_id]
     )
     image_path: Mapped[str]
