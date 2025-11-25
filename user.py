@@ -4,7 +4,12 @@ from flask_login import UserMixin
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
+import receipt
 from database import db
+
+
+class UnauthorizedError(Exception):
+    pass
 
 
 class User(db.Model, UserMixin):
@@ -30,6 +35,27 @@ class User(db.Model, UserMixin):
 
     def login(self):
         pass
+
+    def can_view(self, receipt: receipt.Receipt) -> bool:
+        return False
+
+    def can_handle(self, receipt: receipt.Receipt) -> bool:
+        return False
+
+    def can_approve(self, receipt: receipt.Receipt) -> bool:
+        return False
+
+    def can_deny(self, receipt: receipt.Receipt) -> bool:
+        return False
+
+    def handle(self, receipt: receipt.Receipt):
+        raise UnauthorizedError()
+
+    def approve(self, receipt: receipt.Receipt):
+        raise UnauthorizedError()
+
+    def deny(self, receipt: receipt.Receipt):
+        raise UnauthorizedError()
 
     def save(self):
         db.session.add(self)

@@ -9,6 +9,9 @@ class Salesman(User):
         "polymorphic_identity": "salesman",
     }
 
+    def may_view(self, receipt):
+        return self == receipt.submit
+
     def submit(self, receipt: receipt.Receipt):
         pass
 

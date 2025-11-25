@@ -59,47 +59,16 @@ class Receipt(db.Model):
     def get_all() -> list[Receipt]:
         return db.session.scalars(select(Receipt)).all()
 
-    def is_unprocessed(self) -> bool:
-        return self.handled_by is None and self.approved_by is None and not self.denied
+    def can_be_handled(self) -> bool:
+        return not self.denied and self.handled_by is None
 
-    def is_approved(self) -> bool:
-        return self.approved_by is not None and not self.denied
+    def can_be_approved(self) -> bool:
+        return (not self.denied and self.handled_by is not None
+                and self.approved_by is None)
 
-    def is_handled(self) -> bool:
-        return self.handled_by is not None and not self.denied
+    def can_be_denied(self) -> bool:
+        return not self.denied and self.approved_by is None
 
     def save(self):
         db.session.add(self)
-        db.session.commit()
-
-    def handle(self, accountant: Accountant):
-        assert isinstance(accountant, Accountant)
-
-        if not self.is_unprocessed():
-            # TODO is this the right thing?
-            raise Exception(f"Cannot handle a processed receipt")
-
-        self.handled_by = accountant
-        db.session.commit()
-
-    def deny(self, accountant: Accountant):
-        assert isinstance(accountant, Accountant)
-
-        if not self.is_approved():
-            raise Exception(f"Cannot deny an approved receipt")
-
-        self.deny = False
-        db.session.commit()
-
-    def approve(self, manager: Manager):
-        assert isinstance(manager, Manager)
-
-        if not self.is_handled():
-            raise Exception(f"Cannot approve this receipt")
-
-        if self.handled_by == Manager:
-            raise Exception("Receipt cannot be approved by"
-                            + " same manager that handled receipt")
-
-        self.approved_by = manager
         db.session.commit()

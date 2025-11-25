@@ -79,49 +79,43 @@ def submit():
 @app.route("/receipt/<int:receipt_id>")
 @login_required
 def receipt(receipt_id: int):
-    # Could have methods: may_approve(receipt), may_handle(receipt), may_view(receipt)
     receipt = Receipt.get_by_id(receipt_id)
-    if isinstance(current_user, Manager) and receipt.is_handled() and receipt.approved_by is None:
+    if current_user.can_approve(receipt):
         return render_template("receiptViewApprove.html",
                            user=current_user, receipt=receipt)
-    elif isinstance(current_user, Accountant) and receipt.is_unprocessed():
+    elif current_user.can_handle(receipt):
         return render_template("receiptViewHandle.html",
                            user=current_user, receipt=receipt)
-    elif isinstance(current_user, Accountant):
+    elif current_user.can_view(receipt):
         return render_template("receiptView.html",
                            user=current_user, receipt=receipt)
-    elif isinstance(current_user, Salesman) and receipt.submitter == current_user:
-        return render_template("receiptView.html",
-                           user=current_user, receipt=receipt)
-    else:
-        return redirect(url_for("select"))
+
+    return redirect(url_for("select"))
 
 @app.route("/handle/<int:receipt_id>", methods=["POST"])
 @login_required
 def handle(receipt_id: int):
-    if isinstance(current_user, Accountant):
-        receipt = Receipt.get_by_id(receipt_id)
-        print(receipt)
-        receipt.handle(current_user)
-        print(receipt.is_handled())
+    receipt = Receipt.get_by_id(receipt_id)
+    if current_user.can_handle(receipt):
+        current_user.handle(receipt)
 
     return redirect(url_for("receipt", receipt_id=receipt_id))
 
 @app.route("/approve/<int:receipt_id>", methods=["POST"])
 @login_required
 def approve(receipt_id: int):
-    if isinstance(current_user, Manager):
-        receipt = Receipt.get_by_id(receipt_id)
-        receipt.approve(current_user)
+    receipt = Receipt.get_by_id(receipt_id)
+    if current_user.can_approve(receipt):
+        current_user.approve(receipt)
 
     return redirect(url_for("receipt", receipt_id=receipt_id))
 
 @app.route("/deny/<int:receipt_id>", methods=["POST"])
 @login_required
 def deny(receipt_id: int):
-    if isinstance(current_user, Accountant):
-        receipt = Receipt.get_by_id(receipt_id)
-        receipt.deny(current_user)
+    receipt = Receipt.get_by_id(receipt_id)
+    if current_user.can_deny(receipt):
+        current_user.deny(receipt)
 
     return redirect(url_for("receipt", receipt_id=receipt_id))
 
