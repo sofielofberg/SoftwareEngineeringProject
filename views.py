@@ -5,10 +5,7 @@ from flask_login import login_required, login_user, current_user, logout_user
 
 from main import app
 from receipt import Receipt
-from accountant import Accountant
-from manager import Manager
-from salesman import Salesman
-from user import User
+from user import User, Accountant, Manager, Salesman
 
 @app.route("/")
 def welcome():

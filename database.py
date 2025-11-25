@@ -16,9 +16,9 @@ def init_db(app):
 
 def setup_db(app):
     with app.app_context():
-        import manager
+        import user
 
         db.drop_all()
         db.create_all()
-        db.session.add(manager.Manager("admin", "admin"))
+        db.session.add(user.Manager("admin", "admin"))
         db.session.commit()
