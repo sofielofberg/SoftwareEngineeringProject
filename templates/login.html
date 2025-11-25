@@ -5,9 +5,9 @@
         <link rel="stylesheet" href="/static/login.css">
     </head>
     <body>
-        <button>
-            <a href="{{ url_for("welcome") }}"> Exit </a>
-        </button>
+        <a href="{{ url_for('welcome') }}">
+            <button> Exit </button>
+        </a>
         <form method="POST">
             <fieldset>
                 <legend>Log in</legend> <!-- title in the box of it -->
