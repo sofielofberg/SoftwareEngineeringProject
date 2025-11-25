@@ -1,15 +1,13 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from datetime import datetime
 
 from flask_login import UserMixin
 from sqlalchemy import select
 from sqlalchemy.orm import Mapped, mapped_column
 
 from database import db
-
-if TYPE_CHECKING:
-    from receipt import Receipt
+from receipt import Receipt
 
 
 class UnauthorizedError(Exception):
@@ -40,6 +38,9 @@ class User(db.Model, UserMixin):
     def login(self):
         pass
 
+    def can_submit(self) -> bool:
+        return False
+
     def can_view(self, receipt: Receipt) -> bool:
         return False
 
@@ -51,6 +52,10 @@ class User(db.Model, UserMixin):
 
     def can_deny(self, receipt: Receipt) -> bool:
         return False
+
+    def submit(self, image_path: str, amount: float,
+               date: datetime, bank_stmt_id: int):
+        raise UnauthorizedError()
 
     def handle(self, receipt: Receipt):
         raise UnauthorizedError()
@@ -71,14 +76,16 @@ class Salesman(User):
         "polymorphic_identity": "salesman",
     }
 
-    def may_view(self, receipt):
-        return self == receipt.submit
+    def can_submit(self) -> bool:
+        return True
 
-    def submit(self, receipt: Receipt):
-        pass
+    def can_view(self, receipt: Receipt) -> bool:
+        return self == receipt.submitter
 
-    def get_submitted_receipts(self) -> list[Receipt]:
-        pass
+    def submit(self, image_path: str, amount: float,
+               date: datetime, bank_stmt_id: int):
+        receipt = Receipt(self, image_path, amount, date, bank_stmt_id)
+        receipt.save()
 
 
 class Accountant(User):
@@ -86,21 +93,21 @@ class Accountant(User):
         "polymorphic_identity": "accountant",
     }
 
-    def can_view(self, receipt):
+    def can_view(self, receipt: Receipt) -> bool:
         return True
 
-    def can_handle(self, receipt):
+    def can_handle(self, receipt: Receipt) -> bool:
         return receipt.can_be_handled()
 
-    def can_deny(self, receipt):
+    def can_deny(self, receipt: Receipt) -> bool:
         return receipt.can_be_denied()
 
-    def handle(self, receipt):
+    def handle(self, receipt: Receipt):
         assert receipt.can_be_handled()
         receipt.handled_by = self
         receipt.save()
 
-    def deny(self, receipt):
+    def deny(self, receipt: Receipt):
         assert receipt.can_be_denied()
         receipt.denied = True
         receipt.save()
@@ -111,10 +118,10 @@ class Manager(Accountant):
         "polymorphic_identity": "manager",
     }
 
-    def can_approve(self, receipt):
+    def can_approve(self, receipt: Receipt) -> bool:
         return receipt.can_be_approved() and receipt.handled_by != self
 
-    def approve(self, receipt):
+    def approve(self, receipt: Receipt):
         assert receipt.can_be_approved()
         if receipt.handled_by == self:
             raise UnauthorizedError()

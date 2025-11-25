@@ -56,26 +56,25 @@ def new_profile():
 @login_required
 def select():
     receipts = Receipt.get_all()
+    visible_receipts = [receipt for receipt in receipts
+                                if current_user.can_view(receipt)]
     return render_template(
-        "receiptSelection.html", user=current_user, receipts=receipts
+        "receiptSelection.html", user=current_user, receipts=visible_receipts
     )
 
 
 @app.route("/submit", methods=["GET", "POST"])
 @login_required
 def submit():
-    if request.method == "POST" and isinstance(current_user, Salesman):
+    if not current_user.can_submit():
+        return redirect(url_for("select"))
+
+    if request.method == "POST":
+        image_path = "/static/placeholderReceipt.png"
         amount = float(request.form.get("amount"))
         date = datetime.fromisoformat(request.form.get("date"))
         bank_stmt_id = int(request.form.get("bank_stmt_id"))
-        receipt = Receipt(
-            submitter=current_user,
-            image_path="/static/placeholderReceipt.png",
-            amount=amount,
-            date=date,
-            bank_stmt_id=bank_stmt_id,
-        )
-        receipt.save()
+        current_user.submit(image_path, amount, date, bank_stmt_id)
         return redirect(url_for("select"))
 
     return render_template("receiptSubmission.html", user=current_user)

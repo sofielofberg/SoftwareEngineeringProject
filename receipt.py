@@ -9,7 +9,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from database import db
 
 if TYPE_CHECKING:
-    from user import Accountant, Salesman, Manager
+    from user import User
 
 
 class Receipt(db.Model):
@@ -17,9 +17,7 @@ class Receipt(db.Model):
 
     id: Mapped[int] = mapped_column(primary_key=True, init=False)
     submitter_id: Mapped[int] = mapped_column(ForeignKey("user.id"), init=False)
-    submitter: Mapped[Salesman] = relationship(
-        foreign_keys=[submitter_id]
-    )
+    submitter: Mapped[User] = relationship(foreign_keys=[submitter_id])
     image_path: Mapped[str]
     amount: Mapped[float]
     date: Mapped[datetime]
@@ -33,10 +31,10 @@ class Receipt(db.Model):
         ForeignKey("user.id"), default=None
     )
 
-    handled_by: Mapped[Accountant | None] = relationship(
+    handled_by: Mapped[User | None] = relationship(
         default=None, foreign_keys=[handled_by_id]
     )
-    approved_by: Mapped[Manager | None] = relationship(
+    approved_by: Mapped[User | None] = relationship(
         default=None, foreign_keys=[approved_by_id]
     )
 
