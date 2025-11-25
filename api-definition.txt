@@ -9,7 +9,7 @@ paths:
   /receipts:
     get:
       summary: Return all receipts.
-      description: ...
+      description: Returns an array containg all of our receipts
       operationId: returnReceipts
       responses:
         '200':
@@ -30,7 +30,7 @@ paths:
         - api_key: []
     post:
       summary: Add a new receipt.
-      description: ...
+      description: Adds a new receipt to our system
       operationId: addReceipt
       requestBody:
         description: Add a new receipt
@@ -62,7 +62,7 @@ paths:
   /receipts/approved:
     get:
       summary: Return all approved receipts.
-      description: ...
+      description: Returns an array of all approved receipts
       operationId: returnApprovedReceipts
       responses:
         '200':
