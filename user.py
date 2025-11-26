@@ -35,9 +35,6 @@ class User(db.Model, UserMixin):
     def get_by_username(username) -> User | None:
         return db.session.scalar(select(User).filter_by(username=username))
 
-    def login(self):
-        pass
-
     def can_submit(self) -> bool:
         return False
 

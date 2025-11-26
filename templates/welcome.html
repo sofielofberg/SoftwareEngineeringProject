@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="header">
-            <a href="{{ url_for("login") }}">
+            <a href="{{ url_for('login') }}">
                 <button>
                     login
                 </button>
@@ -31,7 +31,7 @@
                 If you are a new hire, <span style="font-weight: bold;">click on the button
                 below to create a new profile within the system</span>.
             </p>
-            <a href="{{ url_for("new_profile") }}">
+            <a href="{{ url_for('new_profile') }}">
                 <button>
                     create new profile
                 </button>
@@ -46,7 +46,7 @@
                 <br>
                 <br>
                 If you, for development purposes, are already logged in,
-                click <a href="{{ url_for("select") }}"> here </a>
+                click <a href="{{ url_for('select') }}"> here </a>
             </p>
         </div>
     </body>

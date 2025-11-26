@@ -84,10 +84,10 @@ def submit():
 @login_required
 def receipt(receipt_id: int):
     receipt = Receipt.get_by_id(receipt_id)
-    if current_user.can_view(receipt):
-        return render_template("receiptView.html", user=current_user, receipt=receipt)
+    if not current_user.can_view(receipt):
+        return redirect(url_for("select"))
 
-    return redirect(url_for("select"))
+    return render_template("receiptView.html", user=current_user, receipt=receipt)
 
 
 @app.route("/handle/<int:receipt_id>", methods=["POST"])
@@ -118,32 +118,3 @@ def deny(receipt_id: int):
         current_user.deny(receipt)
 
     return redirect(url_for("receipt", receipt_id=receipt_id))
-
-
-@app.route("/accountant")
-@login_required
-def accountant():
-    receipt = Receipt(
-        None, "/static/placeholderReceipt.png", 100.00, datetime.now(), 124
-    )
-    return render_template("receiptViewHandle.html", user=current_user, receipt=receipt)
-
-
-@app.route("/manager")
-@login_required
-def manager():
-    receipt = Receipt(
-        None, "/static/placeholderReceipt.png", 100.00, datetime.now(), 124
-    )
-    return render_template(
-        "receiptViewApprove.html", user=current_user, receipt=receipt
-    )
-
-
-@app.route("/salesman")
-@login_required
-def salesman():
-    receipt = Receipt(
-        None, "/static/placeholderReceipt.png", 100.00, datetime.now(), 124
-    )
-    return render_template("receiptView.html", user=current_user, receipt=receipt)
