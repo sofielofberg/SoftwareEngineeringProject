@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.secret_key = "SECRET TUNNEL!!"
 
 # Initialize database
-database.init_db(app)
+database.init_db(app, "sqlite:///database.db")
 database.setup_db(app)
 
 # Login

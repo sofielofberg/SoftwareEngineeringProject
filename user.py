@@ -28,7 +28,7 @@ class User(db.Model, UserMixin):
     }
 
     @staticmethod
-    def get_by_id(user_id) -> User:
+    def get_by_id(user_id) -> User | None:
         return db.session.get(User, user_id)
 
     @staticmethod
@@ -51,7 +51,7 @@ class User(db.Model, UserMixin):
         return False
 
     def submit(self, image_path: str, amount: float,
-               date: datetime, bank_stmt_id: int):
+               date: datetime, bank_stmt_id: int) -> Receipt:
         raise UnauthorizedError()
 
     def handle(self, receipt: Receipt):
@@ -80,9 +80,10 @@ class Salesman(User):
         return self == receipt.submitter
 
     def submit(self, image_path: str, amount: float,
-               date: datetime, bank_stmt_id: int):
+               date: datetime, bank_stmt_id: int) -> Receipt:
         receipt = Receipt(self, image_path, amount, date, bank_stmt_id)
         receipt.save()
+        return receipt
 
 
 class Accountant(User):

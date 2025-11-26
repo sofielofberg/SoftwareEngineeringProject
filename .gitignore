@@ -2,3 +2,6 @@ __pycache__
 env
 instance
 .venv
+.pytest_cache
+bankpassword
+.coverage

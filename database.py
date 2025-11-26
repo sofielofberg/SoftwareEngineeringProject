@@ -9,8 +9,8 @@ class Base(DeclarativeBase, MappedAsDataclass):
 db = SQLAlchemy(model_class=Base)
 
 
-def init_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.db"
+def init_db(app, db_connection):
+    app.config["SQLALCHEMY_DATABASE_URI"] = db_connection
     db.init_app(app)
 
 
@@ -20,5 +20,6 @@ def setup_db(app):
 
         db.drop_all()
         db.create_all()
+        db.session.add(user.Salesman("s", "s"))
         db.session.add(user.Manager("admin", "admin"))
         db.session.commit()
