@@ -9,6 +9,7 @@ import login
 # Start flask
 app = Flask(__name__)
 app.secret_key = "SECRET TUNNEL!!"
+app.config["UPLOAD_FOLDER"] = "receipts"
 
 # Initialize database
 database.init_db(app, "sqlite:///database.db")

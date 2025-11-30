@@ -1,7 +1,9 @@
+import os
 from datetime import datetime
 
-from flask import redirect, render_template, request, url_for
+from flask import redirect, render_template, request, url_for, send_from_directory
 from flask_login import current_user, login_required, login_user, logout_user
+from werkzeug.utils import secure_filename
 
 from main import app
 from receipt import Receipt
@@ -70,11 +72,14 @@ def submit():
         return redirect(url_for("select"))
 
     if request.method == "POST":
-        image_path = "/static/placeholderReceipt.png"
         amount = float(request.form.get("amount"))
         date = datetime.fromisoformat(request.form.get("date"))
         bank_stmt_id = int(request.form.get("bank_stmt_id"))
-        current_user.submit(image_path, amount, date, bank_stmt_id)
+        image = request.files["image"]
+        image_name = secure_filename(image.filename)
+        image_path = os.path.join(app.config["UPLOAD_FOLDER"], image_name)
+        image.save(image_path)
+        current_user.submit(image_name, amount, date, bank_stmt_id)
         return redirect(url_for("select"))
 
     return render_template("receiptSubmission.html", user=current_user)
@@ -88,6 +93,11 @@ def receipt(receipt_id: int):
         return redirect(url_for("select"))
 
     return render_template("receiptView.html", user=current_user, receipt=receipt)
+
+
+@app.route("/uploads/<path:name>")
+def download_file(name):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], name)
 
 
 @app.route("/handle/<int:receipt_id>", methods=["POST"])

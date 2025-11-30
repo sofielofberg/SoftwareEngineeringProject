@@ -11,7 +11,7 @@
                 Go Back
             </button>
         </a>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <p>
                 You are currently logged in as: {{ user.username }}
             </p>
@@ -22,9 +22,10 @@
             </a>
             <fieldset>
                 <legend>Receipt Creation</legend> <!-- title in the box of it -->
-                <button class="image space" onclick="KeepReceiptPopUp()">
-                    Upload image
-                </button>
+                <label class="space">
+                    Upload image of receipt
+                    <input name="image" type="file" accept="image/*" required oninput="KeepReceiptPopUp()">
+                </label>
                 <label class="space">
                     Amount spent:
                     <input name="amount" type="number" step="0.01" required>
