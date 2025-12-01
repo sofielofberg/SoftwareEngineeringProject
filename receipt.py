@@ -59,6 +59,24 @@ class Receipt(db.Model):
     def can_be_denied(self) -> bool:
         return not self.denied and self.approved_by is None
 
+    def set_handled_by(self, user: User):
+        assert user.can_handle(self)
+        assert self.handled_by is None
+        self.handled_by = user
+        self.save()
+
+    def set_approved_by(self, user: User):
+        assert user.can_approve(self)
+        assert self.approved_by is None
+        self.approved_by = user
+        self.save()
+
+    def set_as_denied(self, user: User):
+        assert user.can_deny(self)
+        assert not self.denied
+        self.denied = True
+        self.save()
+
     def save(self):
         db.session.add(self)
         db.session.commit()

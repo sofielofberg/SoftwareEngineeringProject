@@ -62,22 +62,19 @@ class User(db.Model, UserMixin):
         assert receipt.can_be_handled()
         if not self.can_handle(receipt):
             raise UnauthorizedError()
-        receipt.handled_by = self
-        receipt.save()
+        receipt.set_handled_by(self)
 
     def approve(self, receipt: Receipt):
         assert receipt.can_be_approved()
         if not self.can_approve(receipt):
             raise UnauthorizedError()
-        receipt.approved_by = self
-        receipt.save()
+        receipt.set_approved_by(self)
 
     def deny(self, receipt: Receipt):
         assert receipt.can_be_denied()
         if not self.can_deny(receipt):
             raise UnauthorizedError()
-        receipt.denied = True
-        receipt.save()
+        receipt.set_as_denied(self)
 
     def save(self):
         db.session.add(self)
