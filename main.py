@@ -1,6 +1,8 @@
 # Setup inspired by
 # https://flask.palletsprojects.com/en/stable/patterns/packages/
 
+import os
+
 from flask import Flask
 
 import database
@@ -17,6 +19,9 @@ database.setup_db(app)
 
 # Login
 login.init_login_manager(app)
+
+# Create folder for the receipt images (if it does not exist)
+os.makedirs("receipts", exist_ok=True)
 
 # Import the views
 import views  # noqa: F401
