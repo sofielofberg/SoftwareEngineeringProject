@@ -28,11 +28,11 @@ class User(db.Model, UserMixin):
     }
 
     @staticmethod
-    def get_by_id(user_id) -> User | None:
+    def get_by_id(user_id: int) -> User | None:
         return db.session.get(User, user_id)
 
     @staticmethod
-    def get_by_username(username) -> User | None:
+    def get_by_username(username: str) -> User | None:
         return db.session.scalar(select(User).filter_by(username=username))
 
     def can_submit(self) -> bool:
@@ -52,16 +52,32 @@ class User(db.Model, UserMixin):
 
     def submit(self, image_path: str, amount: float,
                date: datetime, bank_stmt_id: int) -> Receipt:
-        raise UnauthorizedError()
+        if not self.can_submit():
+            raise UnauthorizedError()
+        receipt = Receipt(self, image_path, amount, date, bank_stmt_id)
+        receipt.save()
+        return receipt
 
     def handle(self, receipt: Receipt):
-        raise UnauthorizedError()
+        assert receipt.can_be_handled()
+        if not self.can_handle(receipt):
+            raise UnauthorizedError()
+        receipt.handled_by = self
+        receipt.save()
 
     def approve(self, receipt: Receipt):
-        raise UnauthorizedError()
+        assert receipt.can_be_approved()
+        if not self.can_approve(receipt):
+            raise UnauthorizedError()
+        receipt.approved_by = self
+        receipt.save()
 
     def deny(self, receipt: Receipt):
-        raise UnauthorizedError()
+        assert receipt.can_be_denied()
+        if not self.can_deny(receipt):
+            raise UnauthorizedError()
+        receipt.denied = True
+        receipt.save()
 
     def save(self):
         db.session.add(self)
@@ -79,12 +95,6 @@ class Salesman(User):
     def can_view(self, receipt: Receipt) -> bool:
         return self == receipt.submitter
 
-    def submit(self, image_path: str, amount: float,
-               date: datetime, bank_stmt_id: int) -> Receipt:
-        receipt = Receipt(self, image_path, amount, date, bank_stmt_id)
-        receipt.save()
-        return receipt
-
 
 class Accountant(User):
     __mapper_args__ = {
@@ -100,16 +110,6 @@ class Accountant(User):
     def can_deny(self, receipt: Receipt) -> bool:
         return receipt.can_be_denied()
 
-    def handle(self, receipt: Receipt):
-        assert receipt.can_be_handled()
-        receipt.handled_by = self
-        receipt.save()
-
-    def deny(self, receipt: Receipt):
-        assert receipt.can_be_denied()
-        receipt.denied = True
-        receipt.save()
-
 
 class Manager(Accountant):
     __mapper_args__ = {
@@ -118,11 +118,3 @@ class Manager(Accountant):
 
     def can_approve(self, receipt: Receipt) -> bool:
         return receipt.can_be_approved() and receipt.handled_by != self
-
-    def approve(self, receipt: Receipt):
-        assert receipt.can_be_approved()
-        if receipt.handled_by == self:
-            raise UnauthorizedError()
-
-        receipt.approved_by = self
-        receipt.save()
