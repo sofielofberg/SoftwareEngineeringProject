@@ -50,7 +50,7 @@
                     {% endif %}
 
                     {% for receipt in receipts %}
-                    <a href="{{ url_for("receipt", receipt_id=receipt.id) }}" class="receiptDisplay">
+                    <a href="{{ url_for('receipt', receipt_id=receipt.id) }}" class="receiptDisplay">
                         <p class="rID">
                             #{{ receipt.id }}
                         </p>
